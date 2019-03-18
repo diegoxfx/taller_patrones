@@ -772,7 +772,7 @@ void interfaz_actualizar_factura(int &estado) {
 	 << "| 1. Fecha Factura                        |" << endl
 	 << "| 2. Cliente                              |" << endl
 	 << "| 3. Total Factura                        |" << endl
-	 << "| 4. Total Factura                        |" << endl
+	 << "| 4. Estado Factura                       |" << endl
 	 << "| 5. Items                                |" << endl
 	 << "| 6. Confirmar                            |" << endl
 	 << "| 7. Regresar                             |" << endl

@@ -82,16 +82,15 @@ Factura* Dao<Factura>::get(int key) {
   sql::ResultSet *res2;
   
   sentence << "SELECT * FROM Factura;";
-  sentence2 << "SELECT Item_id FROM Factura_has_Item "
-	    << "WHERE Factura_num_factura = " << num_factura;
   res = DataBase::stmt->executeQuery(sentence.str());
+  res->next();
   num_factura = res->getInt("num_factura");
   id_cliente = res->getInt("Cliente_id");
   fecha_factura = res->getString("fecha_factura");
   estado = res->getString("estado");
   total_factura = res->getDouble("total_factura");
 
-  sentence2 << "SELECT Item_id FROM Factura_has_Item "
+  sentence2 << "SELECT * FROM Factura_has_Item "
 	    << "WHERE Factura_num_factura = " << num_factura;
   res2 = DataBase::stmt->executeQuery(sentence2.str());
 
@@ -110,28 +109,28 @@ Factura* Dao<Factura>::get(int key) {
 void Dao<Factura>::update(Factura &factura) {
   ostringstream sentence;
   ostringstream sentence2;
-  ostringstream sentence3;
-
   int num_factura = factura.get_num_factura();
-  sentence << "UPDATE Factura "
-	   << "SET "
-	   << "fecha_factura = '" << factura.get_fecha_factura() << "', "
-	   << "total_factura = " << factura.get_total_factura() << ", "
-	   << "estado = " << factura.get_estado() << ", "
-	   << "Cliente_id = " << factura.get_id_cliente() << ", "
-	   << "WHERE id = " << num_factura << ";";
-
+  
   sentence2 << "DELETE FROM Factura_has_Item "
-	   << "WHERE id = " << num_factura << ";";
+	    << "WHERE Factura_num_factura = " << num_factura << ";";
 
   DataBase::stmt->execute(sentence2.str());
-  
+
   for(auto& item_id: factura.get_id_items()) {
+    ostringstream sentence3;
     sentence3 << "INSERT INTO Factura_has_Item(Factura_num_factura, Item_id)"
 	      << "VALUES("
 	      << num_factura << ", " << item_id << ");";
     DataBase::stmt->execute(sentence3.str());
   }
+
+  sentence << "UPDATE Factura "
+	   << "SET "
+	   << "fecha_factura = '" << factura.get_fecha_factura() << "', "
+	   << "total_factura = " << factura.get_total_factura() << ", "
+	   << "estado = '" << factura.get_estado() << "', "
+	   << "Cliente_id = " << factura.get_id_cliente() << " "
+	   << "WHERE num_factura = " << num_factura << ";";
 
   DataBase::stmt->execute(sentence.str());
 }
@@ -142,12 +141,12 @@ void Dao<Factura>::erase(Factura &factura) {
   int num_factura = factura.get_num_factura();
   
   sentence2 << "DELETE FROM Factura_has_Item "
-	   << "WHERE id = " << num_factura << ";";
+	   << "WHERE Factura_num_factura = " << num_factura << ";";
 
   DataBase::stmt->execute(sentence2.str());
   
   sentence << "DELETE FROM Factura "
-	   << "WHERE id = " << factura.get_num_factura() << ";";
+	   << "WHERE num_factura = " << factura.get_num_factura() << ";";
 
   DataBase::stmt->execute(sentence.str());
 }

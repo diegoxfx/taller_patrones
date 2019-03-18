@@ -79,7 +79,7 @@ void Dao<Cliente>::update(Cliente &cliente) {
 	   << "apellido = '" << cliente.get_apellido() << "', "
 	   << "genero = '" << cliente.get_genero() << "', "
 	   << "fecha_nacimiento = '" << cliente.get_fecha_nacimiento() << "', "
-	   << "estado_civil = '" << cliente.get_estado_civil() << "', "
+	   << "estado_civil = '" << cliente.get_estado_civil() << "' "
 	   << "WHERE id = " << cliente.get_id() << ";";
 
   DataBase::stmt->execute(sentence.str());
