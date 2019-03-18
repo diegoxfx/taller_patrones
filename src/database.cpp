@@ -14,7 +14,3 @@ DataBase::DataBase(){
   DataBase::con->setSchema("mydb");
   DataBase::stmt = DataBase::con->createStatement();
 }
-
-void DataBase::hola() {
-  std::cout << "Hola" << std::endl;
-}

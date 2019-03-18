@@ -14,8 +14,6 @@ class DataBase {
     static DataBase db;
     return db;
   }
-
-  void hola();
   
   static sql::Statement *stmt;
   static sql::ResultSet *res;
